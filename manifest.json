@@ -1,0 +1,6 @@
+{
+  "name": "input-header-app",
+  "short_name": "input-header-app",
+  "start_url": "/",
+  "display": "standalone"
+}

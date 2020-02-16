@@ -1,0 +1,103 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="input-app/input-app.html">
+<link rel="import" href="button-app/button-app.html">
+<link rel="import" href="message-app/message-app.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<dom-module id="input-header-app-app">
+  <template>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <div class="container border m-2 p-2">
+      <h2>Application to add cards!</h2>
+      <input-app id="inputAppTitle" placeholder="Enter the title"></input-app>
+      <input-app id="inputAppText" placeholder="Type something!"></input-app>
+      <button-app id="buttonApp" on-click="_handleClickAdd" text="Add card" color="btn btn-primary"></button-app>
+    </div>
+    <dom-repeat items="[[texts]]" id="repeat">
+      <template>
+        <div class="container m-2 p-2">
+          <div class="card" style="width: 18rem;">
+            <h5 class="card-header">Card number [[index]]</h5>
+            <div class="card-body">
+              <h6 class="card-subtitle mb-2 text-muted">[[title]]</h6>
+              <p class="card-text">[[item]]</p>
+              <button-app id="buttonAppDelete" on-click="_handleClickDelete" text="Delete card" color="btn btn-danger">
+              </button-app>
+            </div>
+          </div>
+        </div>
+      </template>
+    </dom-repeat>
+    <dom-if if={{show}} restamp=true>
+      <template>
+        <div class="container">
+          <message-app message="{{message}}" color="{{color}}"></message-app>
+        </div>
+      </template>
+    </dom-if>
+  </template>
+
+  <script>
+    class InputHeaderApp extends Polymer.Element {
+      static get is() { return 'input-header-app-app'; }
+      static get properties() {
+        return {
+          text: {
+            type: String 
+          },
+          title: {
+            type: String
+          },  
+          texts: {
+            type: Array,
+            value() {
+              return []
+            }
+          },
+          show: {
+            type: Boolean
+          }
+        };
+      }
+      ready() {
+        super.ready();  
+      }
+      //Get input value and reset input field
+      _handleClickAdd(e) {
+        const text = this.$.inputAppText;
+        const title = this.$.inputAppTitle;
+        this.text = text.textValue;
+        this.title = title.textValue;
+        title._handleDeleteInput();
+        text._handleDeleteInput();
+        this.push('texts', this.text);
+        this._handleShowMessage("Card added!", "alert alert-success");
+
+      }
+      //Deletes card
+      _handleClickDelete() {
+        this.pop('texts');        
+        this._handleShowMessage("Card deleted!", "alert alert-danger");
+
+      }
+      _handleShowMessage(message, color) {
+        this.show = true;
+        this.message = message;
+        this.color = color;
+        setTimeout(()=>{
+          this._handleHideMessage();
+        },3000);
+      }
+      _handleHideMessage() {
+        this.show = false;
+      }
+    } 
+    window.customElements.define(InputHeaderApp.is, InputHeaderApp);
+  </script>
+</dom-module>

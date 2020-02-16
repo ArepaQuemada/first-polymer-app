@@ -1,0 +1,28 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<dom-module id="message-app">
+    <template>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <div class$="[[color]]" role="alert">
+            [[message]]
+        </div>
+    </template>
+    <script>
+        class MessageApp extends Polymer.Element {
+            static get is() {
+                return 'message-app';
+            }
+            static get properties() {
+                return {
+                    message: {
+                        type: String
+                    },
+                    color: {
+                        type: String
+                    }
+                }
+            }
+        }
+        customElements.define(MessageApp.is, MessageApp);
+    </script>
+</dom-module>
