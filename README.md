@@ -11,7 +11,7 @@ First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polyme
 In order to run this applicattio you need the bower components on the app.
 Run this commmand in the directory where the project is.
 ```
-$ npm bower install
+$ bower install
 ```
 
 ## Viewing Your Application
