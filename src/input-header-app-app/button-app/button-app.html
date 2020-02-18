@@ -9,7 +9,7 @@
                 display: block;
             }
         </style>
-        <button type="button" class$="[[color]]">[[text]]</button>
+        <button type="button" class$="[[color]]" disabled$="{{disabled}}">[[text]]</button>
     </template>
     <script>
         class ButtonApp extends Polymer.Element {
@@ -23,6 +23,9 @@
                     },
                     color: {
                         type: String
+                    },
+                    disabled: {
+                        type: Boolean
                     }
                 }
             }

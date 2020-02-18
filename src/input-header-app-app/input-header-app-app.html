@@ -17,7 +17,16 @@
       <h2>Application to add cards!</h2>
       <input-app id="inputAppTitle" placeholder="Enter the title"></input-app>
       <input-app id="inputAppText" placeholder="Type something!"></input-app>
-      <button-app id="buttonApp" on-click="_handleClickAdd" text="Add card" color="btn btn-primary"></button-app>
+      <div class="container row">
+        <div class="col">
+          <button-app id="buttonAppAdd" on-click="_handleClickAdd" text="Add card" color="btn btn-primary">
+          </button-app>
+        </div>
+        <div class="col">
+          <button-app id="buttonAppDelete" on-click="_handleClickDelete" text="Delete last card" color="btn btn-danger">
+          </button-app>
+        </div>
+      </div>
     </div>
     <dom-repeat items="[[texts]]" id="repeat">
       <template>
@@ -27,14 +36,12 @@
             <div class="card-body">
               <h6 class="card-subtitle mb-2 text-muted">[[item.title]]</h6>
               <p class="card-text">[[item.text]]</p>
-              <button-app id="buttonAppDelete" on-click="_handleClickDelete" text="Delete card" color="btn btn-danger">
-              </button-app>
             </div>
           </div>
         </div>
       </template>
     </dom-repeat>
-    <dom-if if={{show}} restamp=true>
+    <dom-if if={{show}} restamp="true">
       <template>
         <div class="container">
           <message-app message="{{message}}" color="{{color}}"></message-app>
@@ -62,11 +69,16 @@
           },
           show: {
             type: Boolean
-          }
+          },
+          index: {
+            type: Number
+          }, 
         };
       }
       ready() {
         super.ready();  
+        this.$.inputAppTitle.addEventListener('focusout', this._handleFocusOut.bind(this));
+        this.$.inputAppText.addEventListener('focusout', this._handleFocusOut.bind(this));
       }
       //Get input value and reset input field
       _handleClickAdd(e) {
@@ -78,13 +90,14 @@
         text._handleDeleteInput();
         this.push('texts', {text: this.text, title: this.title});
         this._handleShowMessage("Card added!", "alert alert-success");
-        console.log(this.texts);
       }
       //Deletes card
       _handleClickDelete() {
         this.pop('texts');        
         this._handleShowMessage("Card deleted!", "alert alert-danger");
-
+      }
+      _handleFocusOut(e) {
+        const input = e.target;
       }
       _handleShowMessage(message, color) {
         this.show = true;
@@ -96,6 +109,9 @@
       }
       _handleHideMessage() {
         this.show = false;
+      }
+      _isModified() {
+        console.log("holis")
       }
     } 
     window.customElements.define(InputHeaderApp.is, InputHeaderApp);
