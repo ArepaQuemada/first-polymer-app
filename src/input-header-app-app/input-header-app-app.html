@@ -23,7 +23,7 @@
           </button-app>
         </div>
         <div class="col">
-          <button-app id="buttonAppDelete" on-click="_handleClickDelete" text="Delete last card" color="btn btn-danger">
+          <button-app id="buttonAppDelete" on-click="_handleClickDelete" text="Delete last card" color="btn btn-danger"> 
           </button-app>
         </div>
       </div>
@@ -36,6 +36,8 @@
             <div class="card-body">
               <h6 class="card-subtitle mb-2 text-muted">[[item.title]]</h6>
               <p class="card-text">[[item.text]]</p>
+              <button-app id="buttonAppDeleteCurrent" on-click="_handleClickDeleteThis" text="Delete this card" color="btn btn-danger" index="[[index]]"> 
+              </button-app>
             </div>
           </div>
         </div>
@@ -73,12 +75,14 @@
           index: {
             type: Number
           }, 
+          isDisabled: {
+            type: Boolean,
+            value: true
+          }
         };
       }
       ready() {
         super.ready();  
-        this.$.inputAppTitle.addEventListener('focusout', this._handleFocusOut.bind(this));
-        this.$.inputAppText.addEventListener('focusout', this._handleFocusOut.bind(this));
       }
       //Get input value and reset input field
       _handleClickAdd(e) {
@@ -96,9 +100,6 @@
         this.pop('texts');        
         this._handleShowMessage("Card deleted!", "alert alert-danger");
       }
-      _handleFocusOut(e) {
-        const input = e.target;
-      }
       _handleShowMessage(message, color) {
         this.show = true;
         this.message = message;
@@ -109,6 +110,9 @@
       }
       _handleHideMessage() {
         this.show = false;
+      }
+      _handleClickDeleteThis(e) {
+        this.splice('texts', e.target.index, 1);
       }
     } 
     window.customElements.define(InputHeaderApp.is, InputHeaderApp);
