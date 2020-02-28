@@ -19,7 +19,7 @@
       <input-app id="inputAppText" placeholder="Type something!"></input-app>
       <div class="container row">
         <div class="col">
-          <button-app id="buttonAppAdd" on-click="_handleClickAdd" text="Add card" color="btn btn-primary">
+          <button-app id="buttonAppAdd" on-click="_handleClickAdd" text="Add card" color="btn btn-primary" disabled='[[isDisabled]]'>
           </button-app>
         </div>
         <div class="col">
@@ -83,6 +83,7 @@
       }
       ready() {
         super.ready();  
+        this.$.inputAppTitle.addEventListener('keyup', this._handleFocus.bind(this));
       }
       //Get input value and reset input field
       _handleClickAdd(e) {
@@ -94,6 +95,7 @@
         text._handleDeleteInput();
         this.push('texts', {text: this.text, title: this.title});
         this._handleShowMessage("Card added!", "alert alert-success");
+        this.isDisabled = true;
       }
       //Deletes card
       _handleClickDelete() {
@@ -112,7 +114,16 @@
         this.show = false;
       }
       _handleClickDeleteThis(e) {
+        console.log(e.target.index);
         this.splice('texts', e.target.index, 1);
+        console.log(this.texts);
+      }
+      _handleFocus(e) {
+        if (e.target.textValue.trim() !== '') { 
+          this.isDisabled = false;
+        } else {
+          this.isDisabled = true;
+        }
       }
     } 
     window.customElements.define(InputHeaderApp.is, InputHeaderApp);
